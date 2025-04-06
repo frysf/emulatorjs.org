@@ -1,17 +1,25 @@
+import { createResolver } from '@nuxt/kit'
+const { resolve: resolvePath } = createResolver(import.meta.url)
+
 export default defineNuxtConfig({
   extends: ['@nuxt-themes/docus'],
   devtools: { enabled: false },
+
   components: [{
     dirs: ['~/components'],
     level: -1
-  }],
+  },
+  { path: resolvePath('components/globals'), global: true, prefix: '' },],
+
   modules: [
     'nuxt-gtag',
     'nuxt-anchorscroll'
   ],
+
   gtag: {
     id: 'G-R87E52EEFR'
   },
+
   app: {
     head: {
       meta: [
@@ -34,17 +42,26 @@ export default defineNuxtConfig({
       ]
     },
   },
+
   mdc: {
     highlight: {
       langs: ['html', 'xml', 'css', 'javascript', 'json', 'markdown', 'http']
     }
   },
+
   experimental: {
     viewTransition: true
   },
+
   anchorscroll: {
     hooks: [
       'page:transition:finish',
     ],
   },
+
+  compatibilityDate: '2024-12-21',
 })
+
+function resolve(arg0: string): string | undefined {
+  throw new Error("Function not implemented.");
+}

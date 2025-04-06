@@ -20,34 +20,34 @@ jobs:
           yarn build
       - name: Zip Website
         run: |
-          zip -r website.zip .output
+          zip -r website.zip .output/
       - name: Upload Website
         uses: actions/upload-artifact@v4
         with:
           name: website
           path: website.zip
           retention-days: 1
+
   run:
     name: Deploy
     needs: build
     if: github.repository == 'EmulatorJS/emulatorjs.org'
     runs-on: emulatorjs-server
     steps:
-      - name: Download a single artifact
+      - name: Download Website
         uses: actions/download-artifact@v4
         with:
           name: website
-          path: /mnt/HDD/website
-      - name: Stop Website
-        run: |
-          systemctl stop emulatorjs-org
-          rm -rf /mnt/HDD/website/emulatorjs.org
       - name: Unzip Website
         run: |
-          unzip -o /mnt/HDD/website/website.zip -d /mnt/HDD/website/emulatorjs.org
-          rm /mnt/HDD/website/website.zip
-      - name: Deploy Website
+          unzip -o website.zip -d output/
+      - name: Update Website
+        run: |
+          rsync -a --delete output/.output/ /mnt/HDD/website/emulatorjs.org/
+      - name: Restart Website
         run: |
           systemctl restart emulatorjs-org
-      
-          
+      - name: Cleanup
+        run: |
+          rm -rf output/
+          rm -f website.zip

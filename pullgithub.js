@@ -21,7 +21,7 @@ if (!fs.statSync("github", {throwIfNoEntry:false})) {
           throw err;
         }
         const newData = `---\ntoc: false\n---\n<style>\na { display: inline-block; }\n</style>\n${data}`;
-        fs.writeFile('content/1.docs/12.contributors.md', newData, (err) => {
+        fs.writeFile('content/1.docs/13.contributors.md', newData, (err) => {
           if (err) {
             throw err;
           }
